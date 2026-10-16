@@ -32,7 +32,7 @@ Requirements:
 
 ### 1. Install the app
 
-Download `WoW-Forever.apk` from the [latest release](https://github.com/jaredgei/wow-forever-android/releases/latest) and install it on your device. The app's package name is `app.wowforever`, so it can sit alongside GameNative or Winlator.
+Download `Classic-Forever.apk` from the [latest release](https://github.com/legustoss/classic-forever-android/releases/latest) and install it on your device. The app's package name is `app.wowforever`, so it can sit alongside GameNative or Winlator.
 
 ### 2. Copy your WoW game data to the device (one-time setup)
 
@@ -155,5 +155,6 @@ GameNative is a general game library with Steam, GOG, Epic, Amazon, EA and Rocks
 ## License
 
 GPL-3.0, the same as GameNative. See [`LICENSE`](LICENSE). The bundled runtime components carry their own licenses (LGPL, MIT and others). See `THIRD_PARTY_NOTICES` and the notices inside each component archive.
-#   C l a s s i c - F o r e v e r - A n d r o i d  
+#   C l a s s i c - F o r e v e r - A n d r o i d 
+ 
  
