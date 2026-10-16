@@ -32,7 +32,7 @@ The app:
 - **~30 GB** free storage (client + Wine environment).
 - Android **11+** (Android 13+ recommended).
 - **"All files access"** permission (Manage external storage).
-- - Current supported game client: `1.60.1.70425`
+- Current supported game client: `1.60.1.70425`
 
 Tested on **AYN Thor** (Snapdragon 8 Gen 2).
 
