@@ -33,6 +33,7 @@ Android-порт **WoW Forever Beta (ARM64 Native)** для устройств �
 - **~30 ГБ** свободного места (клиент + окружение Wine).
 - Android **11+** (рекомендуется Android 13+).
 - Права **«All files access»** (Manage external storage).
+- Актуальный поддерживаемый клиент игры: `1.60.1.70425`
 
 Тестировалось на **AYN Thor** (Snapdragon 8 Gen 2).
 
