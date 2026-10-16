@@ -143,50 +143,56 @@ Create a `local.properties` file in the project root:
 
 ```properties
 sdk.dir=C\:\\Users\\<YOUR_USERNAME>\\AppData\\Local\\Android\\Sdk
+```
 
-Building the APK
-powershell
+### Building the APK
 
+```powershell
 .\gradlew assembleModernDebug
+```
 
 The APK will be at:
-text
 
+```
 app\build\outputs\apk\modern\debug\app-modern-debug.apk
+```
 
-Building version.dll
-bash
+### Building `version.dll`
 
+```bash
 /opt/aarch64-w64-mingw32/bin/clang --target=aarch64-w64-mingw32 \
   --ld-path=/mingw64/bin/ld.lld.exe \
   -shared -o version.dll version.c -O2
+```
 
-Place the compiled version.dll into:
-text
+Place the compiled `version.dll` into:
 
+```
 app/src/main/assets/bundled_components/version.dll
+```
 
-Known limitations
+---
 
-    Works only on Adreno 7xx/8xx. Not tested on Mali or older Adreno.
+## Known limitations
 
-    Requires a native ARM64 client (WowB-ARM64.exe). The x86_64 version will not work.
+- Works **only on Adreno 7xx/8xx**. Not tested on Mali or older Adreno.
+- Requires a **native ARM64 client** (`WowB-ARM64.exe`). The x86_64 version will not work.
+- The memory patch may **fail** when Blizzard updates the client — in that case, update the keys in `version.c`.
+- The app does not auto-update — new versions must be installed manually.
 
-    The memory patch may fail when Blizzard updates the client — in that case, update the keys in version.c.
+---
 
-    The app does not auto-update — new versions must be installed manually.
+## License
 
-License
+Fork of [jaredgei/wow-forever-android](https://github.com/jaredgei/wow-forever-android). Follow the original project's license.
 
-Fork of jaredgei/wow-forever-android. Follow the original project's license.
+The World of Warcraft client and its assets are property of **Blizzard Entertainment**. This project does not distribute the client and is not affiliated with Blizzard.
 
-The World of Warcraft client and its assets are property of Blizzard Entertainment. This project does not distribute the client and is not affiliated with Blizzard.
-Credits
+---
 
-    jaredgei — original wow-forever-android project.
+## Credits
 
-    Winlator — Wine + Box64 + DXVK for Android.
-
-    Turnip — open-source Vulkan driver for Adreno.
-
-    The Classic Forever community — for the server and support.
+- [jaredgei](https://github.com/jaredgei) — original `wow-forever-android` project.
+- [Winlator](https://github.com/brunodev85/winlator) — Wine + Box64 + DXVK for Android.
+- [Turnip](https://gitlab.freedesktop.org/mesa/mesa) — open-source Vulkan driver for Adreno.
+- The Classic Forever community — for the server and support.
