@@ -568,7 +568,7 @@ private fun containerConfig(gameRoot: File, gpu: GpuProfile): JSONObject {
     val envVars = "WRAPPER_MAX_IMAGE_COUNT=0 ZINK_DESCRIPTORS=lazy ZINK_DEBUG=compact,deck_emu MESA_SHADER_CACHE_DISABLE=false MESA_SHADER_CACHE_MAX_SIZE=512MB mesa_glthread=true WINEESYNC=0 MESA_VK_WSI_PRESENT_MODE=mailbox TU_DEBUG=${gpu.tuDebug} VKD3D_SHADER_MODEL=6_0 PULSE_LATENCY_MSEC=144 WINEDLLOVERRIDES=\"version=n,b\"$samsungEnv"
     return JSONObject().apply {
         put("id", CONTAINER_ID)
-        put("name", "WoW Forever")
+        put("name", "Classic Forever")
         put("screenSize", gpu.screenSize)
         put("envVars", envVars)
         put("graphicsDriver", "Wrapper")
@@ -622,24 +622,11 @@ private val CONFIG_DEFAULTS = linkedMapOf(
     "InputDeviceInterfaceStyle" to "\"1\"",
 )
 
-private val FORCED_CONFIG_KEYS = listOf("portal", "gxApi", "RenderScale", "ResampleQuality", "GamePadEnable", "InputDeviceInterfaceStyle")
-
-private val LEGACY_CONFIG_VALUES = mapOf(
-    "farclip" to "\"3000\"",
-    "horizonClip" to "\"3000\"",
-    "RAIDfarclip" to "\"3000\"",
-    "RAIDhorizonClip" to "\"3000\"",
-    "worldBaseMip" to "\"2\"",
-    "RAIDworldBaseMip" to "\"2\"",
-    "graphicsTextureResolution" to "\"0\"",
-    "raidGraphicsTextureResolution" to "\"0\"",
-    "componentTextureLevel" to "\"1\"",
-    "RAIDcomponentTextureLevel" to "\"1\"",
-)
-
 private fun ensureGameConfig(root: File) {
     val flavorDir = File(root, FLAVOR_DIR)
     flavorDir.mkdirs()
+
+    // Создаём .flavor.info, если его нет
     val flavorInfo = File(flavorDir, ".flavor.info")
     if (!flavorInfo.exists()) {
         flavorInfo.writeText("Product Flavor!STRING:0\n$TARGET_PRODUCT\n")
@@ -647,36 +634,28 @@ private fun ensureGameConfig(root: File) {
 
     val wtfDir = File(flavorDir, "WTF")
     wtfDir.mkdirs()
-    val configWtf = File(wtfDir, "Config.wtf")
-    val suspendedWtf = File(wtfDir, CONFIG_NAME)
 
-    if (!configWtf.exists()) {
-        configWtf.writeText(CONFIG_DEFAULTS.entries.joinToString("\n") { "SET ${it.key} ${it.value}" } + "\n")
-    } else {
-        val original = configWtf.readLines().filterNot { it.startsWith("SET ResampleSharpness", ignoreCase = true) }
-        val existingKeys = mutableSetOf<String>()
-        val updated = original.map { line ->
-            val parts = line.takeIf { it.startsWith("SET ", ignoreCase = true) }?.removePrefix("SET ")?.trim()?.split(" ", limit = 2)
-            if (parts?.size != 2) return@map line
-            val (key, value) = parts
-            existingKeys.add(key)
-            val forcedKey = FORCED_CONFIG_KEYS.firstOrNull { it.equals(key, ignoreCase = true) }
-            when {
-                forcedKey != null && value != CONFIG_DEFAULTS.getValue(forcedKey) -> "SET $forcedKey ${CONFIG_DEFAULTS.getValue(forcedKey)}"
-                LEGACY_CONFIG_VALUES[key] == value -> "SET $key ${CONFIG_DEFAULTS.getValue(key)}"
-                else -> line
-            }
-        } + CONFIG_DEFAULTS.filterKeys { it !in existingKeys }.map { (k, v) -> "SET $k $v" }
+    // Единственный конфиг, который мы создаём и используем
+    val androidWtf = File(wtfDir, CONFIG_NAME)
 
-        if (updated != original) {
-            configWtf.writeText(updated.joinToString("\n") + "\n")
+    // Удаляем старые/лишние конфиги, которые остались с прошлых версий
+    listOf("Config.wtf", "BetaSuspendedTest.wtf").forEach { legacyName ->
+        val legacy = File(wtfDir, legacyName)
+        if (legacy.exists()) {
+            legacy.delete()
+            Timber.i("Removed legacy $legacyName")
         }
     }
 
-    // Создаём BetaSuspendedTest.wtf как копию Config.wtf с portal
-    if (!suspendedWtf.exists()) {
-        suspendedWtf.writeText(configWtf.readText())
+    // Создаём AndroidConfig.wtf только если его ещё нет.
+    // Если есть — не трогаем: пользователь мог изменить настройки.
+    if (!androidWtf.exists()) {
+        androidWtf.writeText(
+            CONFIG_DEFAULTS.entries.joinToString("\n") { "SET ${it.key} ${it.value}" } + "\n"
+        )
         Timber.i("Created $CONFIG_NAME with portal $PORTAL")
+    } else {
+        Timber.i("$CONFIG_NAME already exists, leaving it untouched")
     }
 }
 

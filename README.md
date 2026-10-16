@@ -125,7 +125,7 @@ Compared to [jaredgei/wow-forever-android](https://github.com/jaredgei/wow-forev
 - **Added** a native `version.dll` for memory patching via Wine.
 - **Added** an AMOLED theme (black background, white neon).
 - **Changed** `portal` to `auth.gpon.com.co`.
-- **Changed** `execArgs` to `-d3d11 -config BetaSuspendedTest.wtf`.
+- **Changed** `execArgs` to `-d3d11 -config AndroidConfig.wtf`.
 
 ---
 

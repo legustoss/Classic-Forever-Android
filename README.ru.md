@@ -126,7 +126,7 @@ Android-порт **WoW Forever Beta (ARM64 Native)** для устройств �
 - **Добавлена** нативная `version.dll` для патча памяти через Wine.
 - **Добавлена** AMOLED-тема (чёрный фон, белый неон).
 - **Изменён** `portal` на `auth.gpon.com.co`.
-- **Изменён** `execArgs` на `-d3d11 -config BetaSuspendedTest.wtf`.
+- **Изменён** `execArgs` на `-d3d11 -config AndroidConfig.wtf`.
 
 ---
 
