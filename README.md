@@ -1,4 +1,4 @@
-**English** | [Русский](README.ru.md)
+**English** | [Русский](https://github.com/legustoss/Classic-Forever-Android/blob/main/README.ru.md)
 
 ---
 
