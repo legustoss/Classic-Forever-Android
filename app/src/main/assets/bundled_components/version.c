@@ -63,8 +63,10 @@ static int validate_store(const uint8_t* raw) {
                                : (memcmp(key, KNOWN_KEYS[e], 32) == 0);
         if (!key_ok) return 0;
         if (raw[offset + 36] != (uint8_t)EXPECTED_FLAGS[e]) return 0;
+        // Padding после флага: 7f 00 00 в Windows, 00 00 00 под Wine/Proton
         const uint8_t* tail = raw + offset + 37;
-        if (memcmp(tail, "\x7f\x00\x00", 3) != 0 && memcmp(tail, "\x00\x00\x00", 3) != 0) return 0;
+        if (tail[0] != 0x7f && tail[0] != 0x00) return 0;
+        if (tail[1] != 0x00 || tail[2] != 0x00) return 0;
     }
     return 1;
 }
